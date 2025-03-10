@@ -5,21 +5,10 @@ name: Node.js Package
 
 on:
   release:
-    types: [created]
+    types: [published]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - run: npm ci
-      - run: npm test
-
   publish-npm:
-    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -27,7 +16,28 @@ jobs:
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org/
-      - run: npm ci
-      - run: npm publish
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
         env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          RENSHUU_API_KEY: ${{ secrets.RENSHUU_API_KEY }}
+
+      - name: Build
+        run: npm run build
+
+      - name: Determine publish tag
+        id: get_version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          if [[ "$VERSION" == *"-alpha"* ]]; then
+            echo "tag=alpha" >> $GITHUB_OUTPUT
+          else
+            echo "tag=latest" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Publish to npm
+        run: npm publish --tag ${{ steps.get_version.outputs.tag }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
