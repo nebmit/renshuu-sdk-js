@@ -1,8 +1,7 @@
 {
-  "private": true,
   "name": "renshuu-sdk-js",
   "description": "Renshuu SDK for JavaScript",
-  "version": "0.0.2-alpha.0",
+  "version": "0.1.0-alpha.0",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "browser": "dist/index.umd.js",
