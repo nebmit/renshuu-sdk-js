@@ -26,14 +26,8 @@ jobs:
         env:
           RENSHUU_API_KEY: ${{ secrets.RENSHUU_API_KEY }}
 
-  upload-coverage:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          slug: nebmit/renshuu-sdk-js
