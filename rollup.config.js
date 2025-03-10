@@ -1,32 +1,28 @@
-import typescript from "rollup-plugin-typescript2";
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+import typescript from 'rollup-plugin-typescript2';
 
 export default [
-    // ESM build
+    // ESM
     {
-        input: "src/index.ts",
-        output: {
-            file: "dist/index.esm.js",
-            format: "esm",
-        },
-        plugins: [typescript()],
+        input: 'src/index.ts',
+        output: { file: 'dist/index.esm.js', format: 'esm' },
+        plugins: [resolve(), commonjs(), typescript()]
     },
-    // CJS build
+    // CJS
     {
-        input: "src/index.ts",
-        output: {
-            file: "dist/index.cjs.js",
-            format: "cjs",
-        },
-        plugins: [typescript()],
+        input: 'src/index.ts',
+        output: { file: 'dist/index.cjs.js', format: 'cjs' },
+        plugins: [resolve(), commonjs(), typescript()]
     },
-    // UMD build for direct <script> usage
+    // UMD
     {
-        input: "src/index.ts",
+        input: 'src/index.ts',
         output: {
-            file: "dist/index.umd.js",
-            format: "umd",
-            name: "RenshuuSDK", // global variable name if loaded in a browser
+            file: 'dist/index.umd.js',
+            format: 'umd',
+            name: 'RenshuuSDK'  // global var name for <script> usage
         },
-        plugins: [typescript()],
-    },
+        plugins: [resolve(), commonjs(), typescript()]
+    }
 ];
