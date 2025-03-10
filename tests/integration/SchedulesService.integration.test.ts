@@ -58,7 +58,7 @@ describe("SchedulesService (integration)", () => {
         if (terms.pagination.totalPages <= 1) {
             expect(terms.pagination.hasNext).toBe(false);
             expect(terms.pagination.hasPrev).toBe(false);
-            test.skip("Pagination integration test skipped because there is only one page of terms");
+            throw new Error("Pagination integration test failed because there is only one page of terms");
         }
 
         // Test pagination
