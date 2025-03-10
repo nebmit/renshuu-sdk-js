@@ -1,0 +1,66 @@
+import type { RenshuuClientConfig } from "./types";
+
+export class BaseClient {
+    private apiKey: string;
+    private apiBaseUrl: string;
+
+    constructor(config: RenshuuClientConfig) {
+        this.apiKey = config.apiKey;
+        this.apiBaseUrl = config.apiBaseUrl ?? "https://api.renshuu.org/v1";
+    }
+
+    /**
+     * Internal helper to send GET requests
+     */
+    public async get<T>(
+        endpoint: string,
+        params?: Record<string, string | number>,
+    ): Promise<T> {
+        let url = `${this.apiBaseUrl}${endpoint}`;
+        if (params) {
+            const qs = new URLSearchParams();
+            Object.entries(params).forEach(([k, v]) => qs.append(k, String(v)));
+            url += `?${qs.toString()}`;
+        }
+
+        const response = await fetch(url, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${this.apiKey}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Request failed with status: ${response.status}`);
+        }
+        return response.json() as Promise<T>;
+    }
+
+    /**
+     * Internal helper to send PUT requests
+     */
+    public async put(
+        endpoint: string,
+        params?: Record<string, string | number>,
+    ): Promise<boolean> {
+        let url = `${this.apiBaseUrl}${endpoint}`;
+        if (params) {
+            const qs = new URLSearchParams();
+            Object.entries(params).forEach(([k, v]) => qs.append(k, String(v)));
+            url += `?${qs.toString()}`;
+        }
+
+        const response = await fetch(url, {
+            method: "PUT",
+            headers: {
+                Authorization: `Bearer ${this.apiKey}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Request failed with status: ${response.status}`);
+        }
+
+        return true;
+    }
+}
