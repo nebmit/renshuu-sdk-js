@@ -6,6 +6,7 @@ import {
     RenshuuTermGroups,
 } from "../types";
 import { paths } from "../types/renshuuApiTypes";
+import { buildPaginationResponse } from "../utils/paginationHelper";
 
 export class SchedulesService {
     private base: BaseClient;
@@ -51,6 +52,28 @@ export class SchedulesService {
         throw new Error(`Schedule with ID ${schedule_id} not found`);
     }
 
+    private async getScheduleTermsFetcher(
+        page: number,
+        schedule_id: number | string,
+        group: RenshuuTermGroups = "all",
+    ): Promise<PaginatedResult<RenshuuTerm>> {
+        const r = await this.base.get<
+            paths["/schedule/{id}/list"]["get"]["responses"]["200"]["content"]["application/json"]
+        >(`/schedule/${schedule_id}/list`, { pg: page, group: group });
+
+        return buildPaginationResponse<
+            RenshuuTerm,
+            [number | string, RenshuuTermGroups]
+        >(
+            this.getScheduleTermsFetcher.bind(this),
+            r.contents?.terms || [],
+            r.contents?.pg || page,
+            r.contents?.total_pg || 1,
+            schedule_id,
+            group,
+        );
+    }
+
     /**
      * Get all terms for a schedule by ID (/schedule/{id}/list)
      * @param schedule_id The ID of the schedule to fetch terms for
@@ -60,37 +83,10 @@ export class SchedulesService {
      */
     public async getScheduleTerms(
         schedule_id: number | string,
-        page = 1,
         group: RenshuuTermGroups = "all",
     ): Promise<PaginatedResult<RenshuuTerm>> {
         // The return type of this endpoint is a bit weird. It returns the schedule as well as the terms.
         // For now, we'll just return the terms.
-        const r = await this.base.get<
-            paths["/schedule/{id}/list"]["get"]["responses"]["200"]["content"]["application/json"]
-        >(`/schedule/${schedule_id}/list`, { pg: page, group: group });
-        const totalPages = r.contents?.total_pg || 1;
-        const currentPage = r.contents?.pg || 1;
-
-        const next = async () =>
-            page < totalPages
-                ? this.getScheduleTerms(schedule_id, page + 1, group)
-                : Promise.resolve(null);
-
-        const prev = async () =>
-            page > 1
-                ? this.getScheduleTerms(schedule_id, page - 1, group)
-                : Promise.resolve(null);
-
-        return {
-            data: r.contents?.terms || [],
-            pagination: {
-                currentPage: currentPage,
-                totalPages,
-                hasNext: currentPage < totalPages,
-                hasPrev: currentPage > 1,
-                next,
-                prev,
-            },
-        };
+        return this.getScheduleTermsFetcher(1, schedule_id, group);
     }
 }

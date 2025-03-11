@@ -100,7 +100,7 @@ describe("UserService (unit)", () => {
             pg: 1,
         });
 
-        const words = await service.searchWords("test", 1);
+        const words = await service.searchWords("test");
 
         expect(fetch).toHaveBeenCalledWith(
             "https://api.renshuu.org/v1/word/search?value=test&pg=1",

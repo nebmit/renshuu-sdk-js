@@ -1,4 +1,5 @@
 import { BaseClient } from "../BaseClient";
+import { buildPaginationResponse } from "../utils/paginationHelper";
 import { PaginatedResult, RenshuuWord } from "../types";
 import { paths } from "../types/renshuuApiTypes";
 
@@ -58,6 +59,23 @@ export class VocabularyService {
         return this.base.put(`/word/${word_id}`, { list_id: list_id });
     }
 
+    private async searchWordsFetcher(
+        page: number,
+        query: string,
+    ): Promise<PaginatedResult<RenshuuWord>> {
+        const r = await this.base.get<
+            paths["/word/search"]["get"]["responses"]["200"]["content"]["application/json"]
+        >("/word/search", { value: query, pg: page });
+
+        return buildPaginationResponse<RenshuuWord, [string]>(
+            this.searchWordsFetcher.bind(this),
+            r.words || [],
+            r.pg || page,
+            r.total_pg || 1,
+            query,
+        );
+    }
+
     /**
      * Search for words matching a query (/word/search)
      * @param query The query to search for
@@ -66,34 +84,7 @@ export class VocabularyService {
      */
     public async searchWords(
         query: string,
-        page = 1,
     ): Promise<PaginatedResult<RenshuuWord>> {
-        const r = await this.base.get<
-            paths["/word/search"]["get"]["responses"]["200"]["content"]["application/json"]
-        >("/word/search", { value: query, pg: page });
-        const totalPages = r.total_pg || 1;
-        const currentPage = r.pg || 1;
-
-        const next = async () =>
-            page < totalPages
-                ? this.searchWords(query, page + 1)
-                : Promise.resolve(null);
-
-        const prev = async () =>
-            page > 1
-                ? this.searchWords(query, page - 1)
-                : Promise.resolve(null);
-
-        return {
-            data: r.words || [],
-            pagination: {
-                currentPage: currentPage,
-                totalPages,
-                hasNext: currentPage < totalPages,
-                hasPrev: currentPage > 1,
-                next,
-                prev,
-            },
-        };
+        return this.searchWordsFetcher(1, query);
     }
 }
