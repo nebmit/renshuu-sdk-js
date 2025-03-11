@@ -2,6 +2,7 @@
 
 [![tests](https://github.com/nebmit/renshuu-sdk-js/actions/workflows/code-coverage.yml/badge.svg)](https://github.com/nebmit/renshuu-sdk-js/actions/workflows/code-coverage.yml)
 [![codecov](https://codecov.io/gh/nebmit/renshuu-sdk-js/graph/badge.svg)](https://codecov.io/gh/nebmit/renshuu-sdk-js)
+![npm bundle size](https://img.shields.io/bundlephobia/min/renshuu-sdk-js)
 
 A JavaScript SDK for interacting with the Renshuu API.
 
@@ -16,11 +17,11 @@ npm install renshuu-sdk-js
 ### ES Module
 
 ```typescript
-import { RenshuuClient } from 'renshuu-sdk-js';
+import { RenshuuClient } from "renshuu-sdk-js";
 
-const client = new RenshuuClient({ apiKey: 'YOUR_API_KEY' });
+const client = new RenshuuClient({ apiKey: "YOUR_API_KEY" });
 
-client.words.searchWords('test').then(console.log);
+client.words.searchWords("test").then(console.log);
 ```
 
 ### Browser (UMD)
@@ -28,8 +29,8 @@ client.words.searchWords('test').then(console.log);
 ```html
 <script src="https://unpkg.com/renshuu-sdk-js/dist/index.umd.js"></script>
 <script>
-  const client = new RenshuuSDK.RenshuuClient({ apiKey: 'YOUR_API_KEY' });
+    const client = new RenshuuSDK.RenshuuClient({ apiKey: "YOUR_API_KEY" });
 
-  client.words.searchWords('test').then(console.log);
+    client.words.searchWords("test").then(console.log);
 </script>
 ```
