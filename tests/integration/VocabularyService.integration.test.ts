@@ -14,7 +14,7 @@ describe("RenshuuClient (integration)", () => {
     });
 
     it("should search for vocabulary", async () => {
-        const words = await client.vocabulary.searchWords("word", 1);
+        const words = await client.vocabulary.searchWords("word");
         expect(words.pagination).toHaveProperty("currentPage");
         words.data.forEach((word) => {
             expect(word).toHaveProperty("id");
