@@ -9,6 +9,16 @@ export class BaseClient {
         this.apiBaseUrl = config.apiBaseUrl ?? "https://api.renshuu.org/v1";
     }
 
+    private buildUrl(endpoint: string, params?: Record<string, string | number>): string {
+        let url = `${this.apiBaseUrl}${endpoint}`;
+        if (params) {
+            const qs = new URLSearchParams();
+            Object.entries(params).forEach(([k, v]) => qs.append(k, String(v)));
+            url += `?${qs.toString()}`;
+        }
+        return url;
+    }
+
     /**
      * Internal helper to send GET requests
      */
@@ -16,12 +26,7 @@ export class BaseClient {
         endpoint: string,
         params?: Record<string, string | number>,
     ): Promise<T> {
-        let url = `${this.apiBaseUrl}${endpoint}`;
-        if (params) {
-            const qs = new URLSearchParams();
-            Object.entries(params).forEach(([k, v]) => qs.append(k, String(v)));
-            url += `?${qs.toString()}`;
-        }
+        const url = this.buildUrl(endpoint, params);
 
         const response = await fetch(url, {
             method: "GET",
@@ -43,12 +48,7 @@ export class BaseClient {
         endpoint: string,
         params?: Record<string, string | number>,
     ): Promise<boolean> {
-        let url = `${this.apiBaseUrl}${endpoint}`;
-        if (params) {
-            const qs = new URLSearchParams();
-            Object.entries(params).forEach(([k, v]) => qs.append(k, String(v)));
-            url += `?${qs.toString()}`;
-        }
+        const url = this.buildUrl(endpoint, params);
 
         const response = await fetch(url, {
             method: "PUT",
