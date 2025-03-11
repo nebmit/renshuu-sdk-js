@@ -1,7 +1,7 @@
 import { RenshuuClient } from "../../src";
 
 describe("RenshuuClient (integration)", () => {
-    const apiKey = process.env.RENSHUU_API_KEY || "";
+    const apiKey = process.env.RENSHUU_API_KEY ?? "";
     let client: RenshuuClient;
 
     beforeAll(() => {
@@ -63,7 +63,7 @@ describe("RenshuuClient (integration)", () => {
         const schedules = await client.schedules.getSchedules();
         // Create a schedule ID that doesn't exist (Just assuming that, although ids can technically be strings, they are numbers)
         const fakeScheduleId =
-            Math.max(...schedules.map((s) => parseInt(s.id || ""))) + 1;
+            Math.max(...schedules.map((s) => parseInt(s.id ?? ""))) + 1;
         await expect(
             client.vocabulary.addWordToSchedule(1, fakeScheduleId),
         ).rejects.toThrow(`Request failed with status: 404`);
@@ -81,7 +81,7 @@ describe("RenshuuClient (integration)", () => {
         const term = terms.data[0];
 
         await expect(
-            client.vocabulary.addWordToSchedule(term.id || "1", scheduleId),
+            client.vocabulary.addWordToSchedule(term.id ?? "1", scheduleId),
         ).rejects.toThrow(`Request failed with status: 409`);
     });
 });

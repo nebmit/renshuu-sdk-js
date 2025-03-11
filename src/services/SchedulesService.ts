@@ -24,7 +24,7 @@ export class SchedulesService {
             await this.base.get<
                 paths["/schedule"]["get"]["responses"]["200"]["content"]["application/json"]
             >("/schedule");
-        return r.schedules || [];
+        return r.schedules ?? [];
     }
 
     /**
@@ -66,9 +66,9 @@ export class SchedulesService {
             [number | string, RenshuuTermGroups]
         >(
             this.getScheduleTermsFetcher.bind(this),
-            r.contents?.terms || [],
-            r.contents?.pg || page,
-            r.contents?.total_pg || 1,
+            r.contents?.terms ?? [],
+            r.contents?.pg ?? page,
+            r.contents?.total_pg ?? 1,
             schedule_id,
             group,
         );

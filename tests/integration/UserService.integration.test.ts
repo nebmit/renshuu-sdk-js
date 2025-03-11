@@ -1,7 +1,7 @@
 import { RenshuuClient } from "../../src";
 
 describe("UserService (integration)", () => {
-    const apiKey = process.env.RENSHUU_API_KEY || "";
+    const apiKey = process.env.RENSHUU_API_KEY ?? "";
     let client: RenshuuClient;
 
     beforeAll(() => {

@@ -69,9 +69,9 @@ export class VocabularyService {
 
         return buildPaginationResponse<RenshuuWord, [string]>(
             this.searchWordsFetcher.bind(this),
-            r.words || [],
-            r.pg || page,
-            r.total_pg || 1,
+            r.words ?? [],
+            r.pg ?? page,
+            r.total_pg ?? 1,
             query,
         );
     }
