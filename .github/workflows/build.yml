@@ -31,5 +31,12 @@ jobs:
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
+        with:
+          args: >
+            -Dsonar.projectKey=nebmit_renshuu-sdk-js
+            -Dsonar.organization=nebmit
+            -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
+            -Dsonar.coverage.exclusions="**/*.test.ts,tests/**"
+            -Dsonar.cpd.exclusions="src/types/renshuuApiTypes.ts"
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
