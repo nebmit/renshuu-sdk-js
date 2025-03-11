@@ -12,7 +12,7 @@
     "test": "jest --setupFiles dotenv/config",
     "test:unit": "jest tests/unit --testPathPattern=unit --setupFiles dotenv/config",
     "test:integration": "jest tests/integration --testPathPattern=integration --setupFiles dotenv/config",
-    "coverage": "jest --coverage --setupFiles dotenv/config --reporters=jest-junit"
+    "coverage": "jest --coverage --setupFiles dotenv/config --reporters=jest-junit --reporters=default"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.3",
