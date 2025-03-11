@@ -9,7 +9,7 @@ import { paths } from "../types/renshuuApiTypes";
 import { buildPaginationResponse } from "../utils/paginationHelper";
 
 export class SchedulesService {
-    private base: BaseClient;
+    private readonly base: BaseClient;
 
     constructor(base: BaseClient) {
         this.base = base;

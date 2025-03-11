@@ -4,7 +4,7 @@ import { PaginatedResult, RenshuuWord } from "../types";
 import { paths } from "../types/renshuuApiTypes";
 
 export class VocabularyService {
-    private base: BaseClient;
+    private readonly base: BaseClient;
 
     constructor(base: BaseClient) {
         this.base = base;

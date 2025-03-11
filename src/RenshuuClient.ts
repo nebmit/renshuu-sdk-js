@@ -8,7 +8,7 @@ import type { RenshuuClientConfig } from "./types";
  * The main Renshuu API client
  */
 export class RenshuuClient {
-    private base: BaseClient;
+    private readonly base: BaseClient;
     public vocabulary: VocabularyService;
     public user: UserService;
     public schedules: SchedulesService;

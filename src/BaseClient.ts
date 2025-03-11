@@ -1,8 +1,8 @@
 import type { RenshuuClientConfig } from "./types";
 
 export class BaseClient {
-    private apiKey: string;
-    private apiBaseUrl: string;
+    private readonly apiKey: string;
+    private readonly apiBaseUrl: string;
 
     constructor(config: RenshuuClientConfig) {
         this.apiKey = config.apiKey;
