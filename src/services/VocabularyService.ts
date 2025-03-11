@@ -23,7 +23,7 @@ export class VocabularyService {
 
         if (r.words) {
             for (const word of r.words) {
-                if (word.id === `${id}`) {
+                if (`${word.id}` === `${id}`) {
                     return word;
                 }
             }

@@ -33,11 +33,22 @@ export class SchedulesService {
      */
     public async getSchedule(
         schedule_id: number | string,
-    ): Promise<RenshuuSchedule[]> {
+    ): Promise<RenshuuSchedule> {
+        // This is a paginated endpoint? It doesn't look like it should be.
+        // Sketchy workaround to get the word by ID
         const r = await this.base.get<
             paths["/schedule/{id}"]["get"]["responses"]["200"]["content"]["application/json"]
         >(`/schedule/${schedule_id}`);
-        return r.schedules || [];
+
+        if (r.schedules) {
+            for (const schedule of r.schedules) {
+                if (`${schedule.id}` === `${schedule_id}`) {
+                    return schedule;
+                }
+            }
+        }
+
+        throw new Error(`Schedule with ID ${schedule_id} not found`);
     }
 
     /**

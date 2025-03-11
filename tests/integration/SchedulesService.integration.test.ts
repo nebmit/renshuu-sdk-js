@@ -30,8 +30,7 @@ describe("SchedulesService (integration)", () => {
             throw new Error("No schedule ID found");
         }
 
-        const scheduleResult = await client.schedules.getSchedule(scheduleId);
-        const schedule = scheduleResult[0];
+        const schedule = await client.schedules.getSchedule(scheduleId);
         expect(schedule).toHaveProperty("id");
         expect(schedule).toHaveProperty("name");
 
@@ -58,7 +57,9 @@ describe("SchedulesService (integration)", () => {
         if (terms.pagination.totalPages <= 1) {
             expect(terms.pagination.hasNext).toBe(false);
             expect(terms.pagination.hasPrev).toBe(false);
-            throw new Error("Pagination integration test failed because there is only one page of terms");
+            throw new Error(
+                "Pagination integration test failed because there is only one page of terms",
+            );
         }
 
         // Test pagination
@@ -67,12 +68,16 @@ describe("SchedulesService (integration)", () => {
         expect(nextTerms).toHaveProperty("pagination");
 
         if (nextTerms == null) {
-            throw new Error("nextTerms is null when there should be more pages");
+            throw new Error(
+                "nextTerms is null when there should be more pages",
+            );
         }
 
         const prevTerms = await nextTerms.pagination.prev();
         expect(prevTerms).not.toBeNull();
         expect(prevTerms).toHaveProperty("data");
-        expect(prevTerms?.pagination.currentPage).toBe(terms.pagination.currentPage);
+        expect(prevTerms?.pagination.currentPage).toBe(
+            terms.pagination.currentPage,
+        );
     });
 });
