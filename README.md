@@ -1,7 +1,8 @@
 # renshuu-sdk-js
 
-[![tests](https://github.com/nebmit/renshuu-sdk-js/actions/workflows/code-coverage.yml/badge.svg)](https://github.com/nebmit/renshuu-sdk-js/actions/workflows/code-coverage.yml)
-[![codecov](https://codecov.io/gh/nebmit/renshuu-sdk-js/graph/badge.svg)](https://codecov.io/gh/nebmit/renshuu-sdk-js)
+[![tests](https://github.com/nebmit/renshuu-sdk-js/actions/workflows/build.yml/badge.svg)](https://github.com/nebmit/renshuu-sdk-js/actions/workflows/build.yml)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=nebmit_renshuu-sdk-js&metric=coverage)](https://sonarcloud.io/summary/new_code?id=nebmit_renshuu-sdk-js)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=nebmit_renshuu-sdk-js&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=nebmit_renshuu-sdk-js)
 ![npm bundle size](https://img.shields.io/bundlephobia/min/renshuu-sdk-js)
 
 A JavaScript SDK for interacting with the Renshuu API.
