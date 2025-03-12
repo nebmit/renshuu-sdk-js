@@ -2,10 +2,11 @@
 
 [![tests](https://github.com/nebmit/renshuu-sdk-js/actions/workflows/build.yml/badge.svg)](https://github.com/nebmit/renshuu-sdk-js/actions/workflows/build.yml)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=nebmit_renshuu-sdk-js&metric=coverage)](https://sonarcloud.io/summary/new_code?id=nebmit_renshuu-sdk-js)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=nebmit_renshuu-sdk-js&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=nebmit_renshuu-sdk-js)
-![npm bundle size](https://img.shields.io/bundlephobia/min/renshuu-sdk-js)
+[![NPM Version](https://img.shields.io/npm/v/renshuu-sdk-js)](https://www.npmjs.com/package/renshuu-sdk-js)
+[![npm bundle size (min)](https://img.shields.io/bundlephobia/min/renshuu-sdk-js)](https://bundlephobia.com/package/renshuu-sdk-js)
+[![npm bundle size (minzip)](https://img.shields.io/bundlephobia/minzip/renshuu-sdk-js)](https://bundlephobia.com/package/renshuu-sdk-js)
 
-A JavaScript SDK for interacting with the Renshuu API.
+A JavaScript SDK for interacting with the [Renshuu API](https://api.renshuu.org/docs).
 
 ## Installation
 
