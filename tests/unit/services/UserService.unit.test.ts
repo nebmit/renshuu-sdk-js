@@ -1,17 +1,11 @@
 import { BaseClient } from "../../../src/BaseClient";
 import { UserService } from "../../../src/services/UserService";
+import { mockFetch } from "../../mocks/fetch";
 
 describe("UserService (unit)", () => {
     let user: UserService;
 
     beforeEach(() => {
-        // Overwrite the global fetch with a Jest mock
-        global.fetch = jest.fn().mockResolvedValue({
-            ok: true,
-            status: 200,
-            json: async () => ({ fake: "data" }),
-        } as Response);
-
         const base = new BaseClient({ apiKey: "testkey" });
         user = new UserService(base);
     });
@@ -21,6 +15,7 @@ describe("UserService (unit)", () => {
     });
 
     it("should fetch profile", async () => {
+        mockFetch({ fake: "data" });
         const profile = await user.getProfile();
         expect(fetch).toHaveBeenCalledWith(
             "https://api.renshuu.org/v1/profile",
@@ -32,5 +27,94 @@ describe("UserService (unit)", () => {
             },
         );
         expect(profile).toEqual({ fake: "data" });
+    });
+
+    it("should get all lists made by the user grouped by termtype and groups", async () => {
+        mockFetch({
+            termtype_groups: [
+                {
+                    termtype: "kanji",
+                    list_count: 1,
+                    groups: [
+                        {
+                            group_title: "Group 1",
+                            list_count: 1,
+                            lists: [
+                                {
+                                    list_id: 1,
+                                    title: "List 1",
+                                    description: "Description 1",
+                                    termtype: "kanji",
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ],
+        });
+        const lists = await user.getLists();
+        expect(fetch).toHaveBeenCalledWith("https://api.renshuu.org/v1/lists", {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer testkey`,
+            },
+        });
+
+        expect(lists.kanji?.["Group 1"]).toEqual([
+            {
+                list_id: 1,
+                title: "List 1",
+                description: "Description 1",
+                termtype: "kanji",
+            },
+        ]);
+    });
+
+    it("should return a paginated list of terms for a list", async () => {
+        mockFetch({
+            list_id: 1,
+            title: "List 1",
+            contents: {
+                pg: 1,
+                total_pg: 1,
+                terms: [{ fake: "data" }],
+            },
+        });
+        const terms = await user.getListTerms(1);
+        expect(fetch).toHaveBeenCalledWith(
+            "https://api.renshuu.org/v1/list/1?pg=1",
+            {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer testkey`,
+                },
+            },
+        );
+
+        expect(terms.data).toEqual([{ fake: "data" }]);
+        // Pagination is not being tested here, see paginationHelper.unit.test.ts
+    });
+
+    it("should return a paginated list of studied terms", async () => {
+        mockFetch({
+            contents: {
+                pg: 1,
+                total_pg: 1,
+                terms: [{ fake: "data" }],
+            },
+        });
+        const terms = await user.getStudiedTerms("vocab");
+        expect(fetch).toHaveBeenCalledWith(
+            "https://api.renshuu.org/v1/list/all/vocab?pg=1",
+            {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer testkey`,
+                },
+            },
+        );
+
+        expect(terms.data).toEqual([{ fake: "data" }]);
+        // Pagination is not being tested here, see paginationHelper.unit.test.ts
     });
 });
