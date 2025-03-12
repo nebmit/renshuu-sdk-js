@@ -1,13 +1,6 @@
 import { BaseClient } from "../../../src/BaseClient";
 import { VocabularyService } from "../../../src/services/VocabularyService";
-
-function mockFetch(response: any, status: number = 200) {
-    global.fetch = jest.fn().mockResolvedValue({
-        ok: true,
-        status: status,
-        json: async () => response,
-    } as Response);
-}
+import { mockFetch } from "../../mocks/fetch";
 
 describe("UserService (unit)", () => {
     let service: VocabularyService;

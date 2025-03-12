@@ -28,7 +28,7 @@ describe("buildPaginationResponse", () => {
             currentPage,
             totalPages,
             textArg,
-            boolArg
+            boolArg,
         );
 
         expect(result.data).toBe(data);
@@ -49,7 +49,7 @@ describe("buildPaginationResponse", () => {
             currentPage,
             totalPages,
             "testArg",
-            false
+            false,
         );
 
         expect(result.data).toEqual([10, 20]);
@@ -86,7 +86,7 @@ describe("buildPaginationResponse", () => {
             currentPage,
             totalPages,
             textArg,
-            boolArg
+            boolArg,
         );
 
         // next() should exist since currentPage (2) < totalPages (5).
@@ -113,7 +113,7 @@ describe("buildPaginationResponse", () => {
             currentPage,
             totalPages,
             "foo",
-            false
+            false,
         );
 
         expect(result.pagination.hasNext).toBe(false);
@@ -148,7 +148,7 @@ describe("buildPaginationResponse", () => {
             currentPage,
             totalPages,
             "fooArg",
-            true
+            true,
         );
 
         expect(result.pagination.hasPrev).toBe(true);
@@ -169,7 +169,7 @@ describe("buildPaginationResponse", () => {
             currentPage,
             totalPages,
             "barArg",
-            false
+            false,
         );
 
         expect(result.pagination.hasPrev).toBe(false);
@@ -186,7 +186,7 @@ describe("buildPaginationResponse", () => {
             1,
             1,
             "whatever",
-            false
+            false,
         );
 
         expect(result.pagination.hasNext).toBe(false);
@@ -198,7 +198,14 @@ describe("buildPaginationResponse", () => {
     it("should pass the returned data unmodified", async () => {
         // Just confirm the data param is returned in the final object.
         const data = [111, 222, 333];
-        const res = buildPaginationResponse(mockFetcher, data, 2, 3, "arg", true);
+        const res = buildPaginationResponse(
+            mockFetcher,
+            data,
+            2,
+            3,
+            "arg",
+            true,
+        );
         expect(res.data).toBe(data);
     });
 });
