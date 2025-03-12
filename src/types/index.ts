@@ -35,7 +35,17 @@ export type RenshuuTerm =
     | RenshuuSimpleSentence;
 
 export type RenshuuSchedule = components["schemas"]["Schedule"];
+export type RenshuuList = components["schemas"]["List"];
+export type RenshuuListCompact = Omit<
+    components["schemas"]["List"],
+    "contents"
+>;
 
+export type RenshuuTermType = NonNullable<
+    NonNullable<
+        paths["/lists"]["get"]["responses"]["200"]["content"]["application/json"]["termtype_groups"]
+    >[0]["termtype"]
+>;
 export type RenshuuTermGroups = NonNullable<
     NonNullable<paths["/schedule/{id}/list"]["get"]["parameters"]>["query"]
 >["group"];
