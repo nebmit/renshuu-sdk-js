@@ -9,6 +9,31 @@ export class VocabularyService {
     constructor(base: BaseClient) {
         this.base = base;
     }
+    /**
+     * Add word to list (/word/{id})
+     * @param word_id The ID of the word to add
+     * @param list_id The ID of the list to add the word to
+     * @returns True if the word was added successfully
+     */
+    public async addWordToList(
+        word_id: number | string,
+        list_id: number | string,
+    ): Promise<boolean> {
+        return this.base.put(`/word/${word_id}`, { list_id: list_id });
+    }
+
+    /**
+     * Add word to schedule (/word/{id})
+     * @param word_id The ID of the word to add
+     * @param schedule_id The ID of the schedule to add the word to
+     * @returns True if the word was added successfully
+     */
+    public async addWordToSchedule(
+        word_id: number | string,
+        schedule_id: number | string,
+    ): Promise<boolean> {
+        return this.base.put(`/word/${word_id}`, { sched_id: schedule_id });
+    }
 
     /**
      * Get a word by ID (/word/{id})
@@ -34,29 +59,29 @@ export class VocabularyService {
     }
 
     /**
-     * Add word to schedule (/word/{id})
-     * @param word_id The ID of the word to add
-     * @param schedule_id The ID of the schedule to add the word to
-     * @returns True if the word was added successfully
+     * Remove a word from a list
+     * @param word_id The ID of the word to remove
+     * @param list_id The ID of the list to remove the word from
+     * @returns True if the word was removed successfully
      */
-    public async addWordToSchedule(
-        word_id: number | string,
-        schedule_id: number | string,
-    ): Promise<boolean> {
-        return this.base.put(`/word/${word_id}`, { sched_id: schedule_id });
-    }
-
-    /**
-     * Add word to list (/word/{id})
-     * @param word_id The ID of the word to add
-     * @param list_id The ID of the list to add the word to
-     * @returns True if the word was added successfully
-     */
-    public async addWordToList(
+    public async removeWordFromList(
         word_id: number | string,
         list_id: number | string,
     ): Promise<boolean> {
-        return this.base.put(`/word/${word_id}`, { list_id: list_id });
+        return this.base.delete(`/word/${word_id}`, { list_id: list_id });
+    }
+
+    /**
+     * Remove a word from a schedule
+     * @param word_id The ID of the word to remove
+     * @param schedule_id The ID of the schedule to remove the word from
+     * @returns True if the word was removed successfully
+     */
+    public async removeWordFromSchedule(
+        word_id: number | string,
+        schedule_id: number | string,
+    ): Promise<boolean> {
+        return this.base.delete(`/word/${word_id}`, { sched_id: schedule_id });
     }
 
     private async searchWordsFetcher(
