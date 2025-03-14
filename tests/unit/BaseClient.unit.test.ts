@@ -1,15 +1,11 @@
 import { BaseClient } from "../../src/BaseClient";
+import { mockFetch } from "../mocks/fetch";
 
 describe("BaseClient (unit)", () => {
     let base: BaseClient;
 
     beforeEach(() => {
-        // Overwrite the global fetch with a Jest mock
-        global.fetch = jest.fn().mockResolvedValue({
-            ok: true,
-            status: 200,
-            json: async () => ({ fake: "data" }),
-        } as Response);
+        mockFetch({});
 
         base = new BaseClient({ apiKey: "testkey" });
     });
@@ -42,11 +38,7 @@ describe("BaseClient (unit)", () => {
     });
 
     it("should error on a GET request with non-200 status", async () => {
-        global.fetch = jest.fn().mockResolvedValue({
-            ok: false,
-            status: 404,
-            json: async () => ({ error: "Not found" }),
-        } as Response);
+        mockFetch({ error: "Not found" }, 404);
 
         await expect(base.get("/test")).rejects.toThrow(
             "Request failed with status: 404",
@@ -77,14 +69,43 @@ describe("BaseClient (unit)", () => {
     });
 
     it("should error on a PUT request with non-200 status", async () => {
-        global.fetch = jest.fn().mockResolvedValue({
-            ok: false,
-            status: 404,
-            json: async () => ({ error: "Not found" }),
-        } as Response);
+        mockFetch({ error: "Not found" }, 404);
 
         await expect(base.put("/test")).rejects.toThrow(
             "Request failed with status: 404",
+        );
+    });
+
+    it("should send a DELETE request", async () => {
+        await base.delete("/test");
+
+        expect(fetch).toHaveBeenCalledWith("https://api.renshuu.org/v1/test", {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer testkey`,
+            },
+        });
+    });
+
+    it("should send a DELETE request with query params", async () => {
+        await base.delete("/test", { param: "value" });
+
+        expect(fetch).toHaveBeenCalledWith(
+            "https://api.renshuu.org/v1/test?param=value",
+            {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer testkey`,
+                },
+            },
+        );
+    });
+
+    it("should error on a DELETE request with non-200 status", async () => {
+        mockFetch({ error: "Unauthorized" }, 401);
+
+        await expect(base.delete("/test")).rejects.toThrow(
+            "Request failed with status: 401",
         );
     });
 });
