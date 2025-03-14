@@ -115,4 +115,38 @@ describe("UserService (unit)", () => {
         expect(words.pagination.next()).resolves.toBeNull();
         expect(words.pagination.prev()).resolves.toBeNull();
     });
+
+    it("should remove a word from a schedule", async () => {
+        mockFetch({});
+
+        const success = await service.removeWordFromSchedule(123, 456);
+
+        expect(fetch).toHaveBeenCalledWith(
+            "https://api.renshuu.org/v1/word/123?sched_id=456",
+            {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer testkey`,
+                },
+            },
+        );
+        expect(success).toBe(true);
+    });
+
+    it("should remove a word from a list", async () => {
+        mockFetch({});
+
+        const success = await service.removeWordFromList(123, 456);
+
+        expect(fetch).toHaveBeenCalledWith(
+            "https://api.renshuu.org/v1/word/123?list_id=456",
+            {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer testkey`,
+                },
+            },
+        );
+        expect(success).toBe(true);
+    });
 });

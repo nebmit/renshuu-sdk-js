@@ -84,4 +84,38 @@ describe("RenshuuClient (integration)", () => {
             client.vocabulary.addWordToSchedule(term.id ?? "1", scheduleId),
         ).rejects.toThrow(`Request failed with status: 409`);
     });
+
+    it("should add a word to a schedule", async () => {
+        const schedules = await client.schedules.getSchedules();
+        const scheduleId = schedules[0].id;
+
+        if (!scheduleId) {
+            throw new Error("No schedules found, cannot run test");
+        }
+
+        try {
+            await client.vocabulary.removeWordFromSchedule(111, scheduleId);
+        } catch (e) {
+            // Ignore
+        }
+
+        await client.vocabulary.addWordToSchedule(111, scheduleId);
+    });
+
+    it("should remove a word from a schedule", async () => {
+        const schedules = await client.schedules.getSchedules();
+        const scheduleId = schedules[0].id;
+
+        if (!scheduleId) {
+            throw new Error("No schedules found, cannot run test");
+        }
+
+        try {
+            await client.vocabulary.addWordToSchedule(112, scheduleId);
+        } catch (e) {
+            // Ignore
+        }
+
+        await client.vocabulary.removeWordFromSchedule(112, scheduleId);
+    });
 });
