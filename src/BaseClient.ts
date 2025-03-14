@@ -9,7 +9,10 @@ export class BaseClient {
         this.apiBaseUrl = config.apiBaseUrl ?? "https://api.renshuu.org/v1";
     }
 
-    private buildUrl(endpoint: string, params?: Record<string, string | number>): string {
+    private buildUrl(
+        endpoint: string,
+        params?: Record<string, string | number>,
+    ): string {
         let url = `${this.apiBaseUrl}${endpoint}`;
         if (params) {
             const qs = new URLSearchParams();
@@ -52,6 +55,26 @@ export class BaseClient {
 
         const response = await fetch(url, {
             method: "PUT",
+            headers: {
+                Authorization: `Bearer ${this.apiKey}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Request failed with status: ${response.status}`);
+        }
+
+        return true;
+    }
+
+    public async delete(
+        endpoint: string,
+        params?: Record<string, string | number>,
+    ): Promise<boolean> {
+        const url = this.buildUrl(endpoint, params);
+
+        const response = await fetch(url, {
+            method: "DELETE",
             headers: {
                 Authorization: `Bearer ${this.apiKey}`,
             },
