@@ -2,7 +2,7 @@ import { BaseClient } from "../../../src/BaseClient";
 import { VocabularyService } from "../../../src/services/VocabularyService";
 import { mockFetch } from "../../mocks/fetch";
 
-describe("UserService (unit)", () => {
+describe("VocabularyService (unit)", () => {
     let service: VocabularyService;
 
     beforeEach(() => {

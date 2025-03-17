@@ -3,11 +3,11 @@ import { UserService } from "../../../src/services/UserService";
 import { mockFetch } from "../../mocks/fetch";
 
 describe("UserService (unit)", () => {
-    let user: UserService;
+    let service: UserService;
 
     beforeEach(() => {
         const base = new BaseClient({ apiKey: "testkey" });
-        user = new UserService(base);
+        service = new UserService(base);
     });
 
     afterEach(() => {
@@ -16,7 +16,7 @@ describe("UserService (unit)", () => {
 
     it("should fetch profile", async () => {
         mockFetch({ fake: "data" });
-        const profile = await user.getProfile();
+        const profile = await service.getProfile();
         expect(fetch).toHaveBeenCalledWith(
             "https://api.renshuu.org/v1/profile",
             {
@@ -52,7 +52,7 @@ describe("UserService (unit)", () => {
                 },
             ],
         });
-        const lists = await user.getLists();
+        const lists = await service.getLists();
         expect(fetch).toHaveBeenCalledWith("https://api.renshuu.org/v1/lists", {
             method: "GET",
             headers: {
@@ -80,7 +80,7 @@ describe("UserService (unit)", () => {
                 terms: [{ fake: "data" }],
             },
         });
-        const terms = await user.getListTerms(1);
+        const terms = await service.getListTerms(1);
         expect(fetch).toHaveBeenCalledWith(
             "https://api.renshuu.org/v1/list/1?pg=1",
             {
@@ -103,7 +103,7 @@ describe("UserService (unit)", () => {
                 terms: [{ fake: "data" }],
             },
         });
-        const terms = await user.getStudiedTerms("vocab");
+        const terms = await service.getStudiedTerms("vocab");
         expect(fetch).toHaveBeenCalledWith(
             "https://api.renshuu.org/v1/list/all/vocab?pg=1",
             {

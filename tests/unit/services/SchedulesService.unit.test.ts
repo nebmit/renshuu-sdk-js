@@ -2,7 +2,7 @@ import { BaseClient } from "../../../src/BaseClient";
 import { SchedulesService } from "../../../src/services/SchedulesService";
 import { mockFetch } from "../../mocks/fetch";
 
-describe("UserService (unit)", () => {
+describe("SchedulesService (unit)", () => {
     let service: SchedulesService;
 
     beforeEach(() => {
