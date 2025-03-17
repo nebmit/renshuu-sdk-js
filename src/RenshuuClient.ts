@@ -1,5 +1,6 @@
 import { BaseClient } from "./BaseClient";
 import { SchedulesService } from "./services/SchedulesService";
+import { SentencesService } from "./services/SentencesService";
 import { UserService } from "./services/UserService";
 import { VocabularyService } from "./services/VocabularyService";
 import type { RenshuuClientConfig } from "./types";
@@ -9,9 +10,10 @@ import type { RenshuuClientConfig } from "./types";
  */
 export class RenshuuClient {
     private readonly base: BaseClient;
-    public vocabulary: VocabularyService;
-    public user: UserService;
     public schedules: SchedulesService;
+    public sentences: SentencesService;
+    public user: UserService;
+    public vocabulary: VocabularyService;
 
     /**
      * Create a new Renshuu API client
@@ -19,8 +21,9 @@ export class RenshuuClient {
      */
     constructor(config: RenshuuClientConfig) {
         this.base = new BaseClient(config);
-        this.vocabulary = new VocabularyService(this.base);
-        this.user = new UserService(this.base);
         this.schedules = new SchedulesService(this.base);
+        this.sentences = new SentencesService(this.base);
+        this.user = new UserService(this.base);
+        this.vocabulary = new VocabularyService(this.base);
     }
 }

@@ -1,7 +1,6 @@
 import { BaseClient } from "../BaseClient";
 import {
     PaginatedResult,
-    RenshuuList,
     RenshuuListCompact,
     RenshuuProfile,
     RenshuuTerm,

@@ -1,7 +1,7 @@
 import { BaseClient } from "../BaseClient";
-import { buildPaginationResponse } from "../utils/paginationHelper";
 import { PaginatedResult, RenshuuWord } from "../types";
 import { paths } from "../types/renshuuApiTypes";
+import { buildPaginationResponse } from "../utils/paginationHelper";
 
 export class VocabularyService {
     private readonly base: BaseClient;
@@ -59,7 +59,7 @@ export class VocabularyService {
     }
 
     /**
-     * Remove a word from a list
+     * Remove a word from a list (/word/{id})
      * @param word_id The ID of the word to remove
      * @param list_id The ID of the list to remove the word from
      * @returns True if the word was removed successfully
@@ -72,7 +72,7 @@ export class VocabularyService {
     }
 
     /**
-     * Remove a word from a schedule
+     * Remove a word from a schedule (/word/{id})
      * @param word_id The ID of the word to remove
      * @param schedule_id The ID of the schedule to remove the word from
      * @returns True if the word was removed successfully
@@ -104,7 +104,6 @@ export class VocabularyService {
     /**
      * Search for words matching a query (/word/search)
      * @param query The query to search for
-     * @param page The page number to fetch
      * @returns A paginated result of words
      */
     public async searchWords(
