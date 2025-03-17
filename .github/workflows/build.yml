@@ -37,6 +37,7 @@ jobs:
                       -Dsonar.organization=nebmit
                       -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
                       -Dsonar.coverage.exclusions="**/*.test.ts,tests/**"
+                      -Dsonar.cpd.exclusions="**/*.test.ts,tests/**"
                       -Dsonar.exclusions="src/types/renshuuApiTypes.ts"
               env:
                   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
