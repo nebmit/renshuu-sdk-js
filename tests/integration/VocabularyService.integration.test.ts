@@ -59,47 +59,49 @@ describe("RenshuuClient (integration)", () => {
         ).rejects.toThrow("Word with ID 49302422503972390q not found");
     });
 
-    it("should add a word to a schedule (schedule not found)", async () => {
-        const schedules = await client.schedules.getSchedules();
-        // Create a schedule ID that doesn't exist (Just assuming that, although ids can technically be strings, they are numbers)
-        const fakeScheduleId =
-            Math.max(...schedules.map((s) => parseInt(s.id ?? ""))) + 1;
-        await expect(
-            client.vocabulary.addWordToSchedule(1, fakeScheduleId),
-        ).rejects.toThrow(`Request failed with status: 404`);
-    });
+    describe("addWordToSchedule", () => {
+        it("should add a word to a schedule (schedule not found)", async () => {
+            const schedules = await client.schedules.getSchedules();
+            // Create a schedule ID that doesn't exist (Just assuming that, although ids can technically be strings, they are numbers)
+            const fakeScheduleId =
+                Math.max(...schedules.map((s) => parseInt(s.id ?? ""))) + 1;
+            await expect(
+                client.vocabulary.addWordToSchedule(1, fakeScheduleId),
+            ).rejects.toThrow(`Request failed with status: 404`);
+        });
 
-    it("should add a word to a schedule (word already added)", async () => {
-        const schedules = await client.schedules.getSchedules();
-        const scheduleId = schedules[0].id;
+        it("should add a word to a schedule (word already added)", async () => {
+            const schedules = await client.schedules.getSchedules();
+            const scheduleId = schedules[0].id;
 
-        if (!scheduleId) {
-            throw new Error("No schedules found, cannot run test");
-        }
+            if (!scheduleId) {
+                throw new Error("No schedules found, cannot run test");
+            }
 
-        const terms = await client.schedules.getScheduleTerms(scheduleId);
-        const term = terms.data[0];
+            const terms = await client.schedules.getScheduleTerms(scheduleId);
+            const term = terms.data[0];
 
-        await expect(
-            client.vocabulary.addWordToSchedule(term.id ?? "1", scheduleId),
-        ).rejects.toThrow(`Request failed with status: 409`);
-    });
+            await expect(
+                client.vocabulary.addWordToSchedule(term.id ?? "1", scheduleId),
+            ).rejects.toThrow(`Request failed with status: 409`);
+        });
 
-    it("should add a word to a schedule", async () => {
-        const schedules = await client.schedules.getSchedules();
-        const scheduleId = schedules[0].id;
+        it("should add a word to a schedule", async () => {
+            const schedules = await client.schedules.getSchedules();
+            const scheduleId = schedules[0].id;
 
-        if (!scheduleId) {
-            throw new Error("No schedules found, cannot run test");
-        }
+            if (!scheduleId) {
+                throw new Error("No schedules found, cannot run test");
+            }
 
-        try {
-            await client.vocabulary.removeWordFromSchedule(111, scheduleId);
-        } catch (e) {
-            // Ignore
-        }
+            try {
+                await client.vocabulary.removeWordFromSchedule(111, scheduleId);
+            } catch (e) {
+                // Ignore
+            }
 
-        await client.vocabulary.addWordToSchedule(111, scheduleId);
+            await client.vocabulary.addWordToSchedule(111, scheduleId);
+        });
     });
 
     it("should remove a word from a schedule", async () => {

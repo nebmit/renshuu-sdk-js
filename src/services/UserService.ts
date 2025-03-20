@@ -48,7 +48,7 @@ export class UserService {
                     groups.forEach(({ group_title, lists }) => {
                         if (!group_title || !lists) return;
                         acc[termtype] = acc[termtype] || {};
-                        acc[termtype]![group_title] = lists;
+                        acc[termtype][group_title] = lists;
                     });
 
                     return acc;

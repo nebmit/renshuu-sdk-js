@@ -45,7 +45,7 @@ describe("GrammarService (unit)", () => {
         it("should add grammar to a user list", async () => {
             mockFetch({});
 
-            const grammar = await service.addGrammarToList(1, 9);
+            await service.addGrammarToList(1, 9);
             expect(fetch).toHaveBeenCalledWith(
                 "https://api.renshuu.org/v1/grammar/1?list_id=9",
                 {
@@ -62,7 +62,7 @@ describe("GrammarService (unit)", () => {
         it("should add grammar to a user schedule", async () => {
             mockFetch({});
 
-            const grammar = await service.addGrammarToSchedule(1, 9);
+            await service.addGrammarToSchedule(1, 9);
             expect(fetch).toHaveBeenCalledWith(
                 "https://api.renshuu.org/v1/grammar/1?sched_id=9",
                 {
@@ -79,7 +79,7 @@ describe("GrammarService (unit)", () => {
         it("should remove grammar from a user list", async () => {
             mockFetch({});
 
-            const grammar = await service.removeGrammarFromList(1, 9);
+            await service.removeGrammarFromList(1, 9);
             expect(fetch).toHaveBeenCalledWith(
                 "https://api.renshuu.org/v1/grammar/1?list_id=9",
                 {
@@ -96,7 +96,7 @@ describe("GrammarService (unit)", () => {
         it("should remove grammar from a user schedule", async () => {
             mockFetch({});
 
-            const grammar = await service.removeGrammarFromSchedule(1, 9);
+            await service.removeGrammarFromSchedule(1, 9);
             expect(fetch).toHaveBeenCalledWith(
                 "https://api.renshuu.org/v1/grammar/1?sched_id=9",
                 {
