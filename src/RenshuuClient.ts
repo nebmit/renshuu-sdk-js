@@ -1,4 +1,5 @@
 import { BaseClient } from "./BaseClient";
+import { GrammarService } from "./services/GrammarService";
 import { SchedulesService } from "./services/SchedulesService";
 import { SentencesService } from "./services/SentencesService";
 import { UserService } from "./services/UserService";
@@ -10,6 +11,7 @@ import type { RenshuuClientConfig } from "./types";
  */
 export class RenshuuClient {
     private readonly base: BaseClient;
+    public grammar: GrammarService;
     public schedules: SchedulesService;
     public sentences: SentencesService;
     public user: UserService;
@@ -21,6 +23,7 @@ export class RenshuuClient {
      */
     constructor(config: RenshuuClientConfig) {
         this.base = new BaseClient(config);
+        this.grammar = new GrammarService(this.base);
         this.schedules = new SchedulesService(this.base);
         this.sentences = new SentencesService(this.base);
         this.user = new UserService(this.base);
