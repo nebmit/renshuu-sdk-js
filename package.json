@@ -1,7 +1,7 @@
 {
   "name": "renshuu-sdk-js",
   "description": "A JavaScript SDK for interacting with the Renshuu API.",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "browser": "dist/index.umd.js",
