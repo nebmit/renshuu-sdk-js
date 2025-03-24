@@ -14,7 +14,7 @@ describe("KanjiService (integration)", () => {
     });
 
     it("should get a kanji by id", async () => {
-        const kanji = await client.kanji.getKanji(1);
+        const kanji = await client.kanji.getById(1);
         expect(kanji).toHaveProperty("id");
         expect(kanji).toHaveProperty("kanji");
         expect(kanji).toHaveProperty("definition");
@@ -29,7 +29,7 @@ describe("KanjiService (integration)", () => {
             const fakeScheduleId =
                 Math.max(...schedules.map((s) => parseInt(s.id ?? ""))) + 1;
             await expect(
-                client.kanji.addKanjiToSchedule(2100, fakeScheduleId),
+                client.kanji.addToSchedule(2100, fakeScheduleId),
             ).rejects.toThrow(`Request failed with status: 404`);
         });
 
@@ -42,13 +42,13 @@ describe("KanjiService (integration)", () => {
             }
 
             try {
-                await client.kanji.addKanjiToSchedule(2100, scheduleId);
+                await client.kanji.addToSchedule(2100, scheduleId);
             } catch (e) {
                 // Ignore
             }
 
             await expect(
-                client.kanji.addKanjiToSchedule(2100, scheduleId),
+                client.kanji.addToSchedule(2100, scheduleId),
             ).rejects.toThrow(`Request failed with status: 409`);
         });
 
@@ -61,12 +61,12 @@ describe("KanjiService (integration)", () => {
             }
 
             try {
-                await client.kanji.removeKanjiFromSchedule(269, scheduleId);
+                await client.kanji.removeFromSchedule(269, scheduleId);
             } catch (e) {
                 // Ignore
             }
 
-            await client.kanji.addKanjiToSchedule(269, scheduleId);
+            await client.kanji.addToSchedule(269, scheduleId);
         });
     });
 
@@ -79,16 +79,16 @@ describe("KanjiService (integration)", () => {
         }
 
         try {
-            await client.kanji.addKanjiToSchedule(271, scheduleId);
+            await client.kanji.addToSchedule(271, scheduleId);
         } catch (e) {
             // Ignore
         }
 
-        await client.kanji.removeKanjiFromSchedule(271, scheduleId);
+        await client.kanji.removeFromSchedule(271, scheduleId);
     });
 
     it("should search for kanji", async () => {
-        const kanjis = await client.kanji.searchKanji("meeting");
+        const kanjis = await client.kanji.search("meeting");
 
         kanjis.forEach((kanji) => {
             expect(kanji).toHaveProperty("id");

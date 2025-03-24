@@ -22,7 +22,7 @@ describe("KanjiService (unit)", () => {
                 definition: "heavy, important",
             });
 
-            const kanji = await service.getKanji(1);
+            const kanji = await service.getById(1);
 
             expect(fetch).toHaveBeenCalledWith(
                 "https://api.renshuu.org/v1/kanji/1",
@@ -45,7 +45,7 @@ describe("KanjiService (unit)", () => {
         it("should add kanji to a user list", async () => {
             mockFetch({});
 
-            await service.addKanjiToList(1, 9);
+            await service.addToList(1, 9);
             expect(fetch).toHaveBeenCalledWith(
                 "https://api.renshuu.org/v1/kanji/1?list_id=9",
                 {
@@ -62,7 +62,7 @@ describe("KanjiService (unit)", () => {
         it("should add kanji to a user schedule", async () => {
             mockFetch({});
 
-            await service.addKanjiToSchedule(1, 9);
+            await service.addToSchedule(1, 9);
             expect(fetch).toHaveBeenCalledWith(
                 "https://api.renshuu.org/v1/kanji/1?sched_id=9",
                 {
@@ -79,7 +79,7 @@ describe("KanjiService (unit)", () => {
         it("should remove kanji from a user list", async () => {
             mockFetch({});
 
-            await service.removeKanjiFromList(1, 9);
+            await service.removeFromList(1, 9);
             expect(fetch).toHaveBeenCalledWith(
                 "https://api.renshuu.org/v1/kanji/1?list_id=9",
                 {
@@ -96,7 +96,7 @@ describe("KanjiService (unit)", () => {
         it("should remove kanji from a user schedule", async () => {
             mockFetch({});
 
-            await service.removeKanjiFromSchedule(1, 9);
+            await service.removeFromSchedule(1, 9);
             expect(fetch).toHaveBeenCalledWith(
                 "https://api.renshuu.org/v1/kanji/1?sched_id=9",
                 {
@@ -122,7 +122,7 @@ describe("KanjiService (unit)", () => {
                 ],
             });
 
-            const kanjis = await service.searchKanji("test");
+            const kanjis = await service.search("test");
             expect(fetch).toHaveBeenCalledWith(
                 "https://api.renshuu.org/v1/kanji/search?value=test",
                 {

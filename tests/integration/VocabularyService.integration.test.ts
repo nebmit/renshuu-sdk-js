@@ -14,7 +14,7 @@ describe("RenshuuClient (integration)", () => {
     });
 
     it("should search for vocabulary", async () => {
-        const words = await client.vocabulary.searchWords("word");
+        const words = await client.vocabulary.search("word");
         expect(words.pagination).toHaveProperty("currentPage");
         words.data.forEach((word) => {
             expect(word).toHaveProperty("id");
@@ -45,7 +45,7 @@ describe("RenshuuClient (integration)", () => {
     });
 
     it("should fetch a word by ID", async () => {
-        const word = await client.vocabulary.getWord(1);
+        const word = await client.vocabulary.getById(1);
         expect(word).toHaveProperty("id");
         expect(word).toHaveProperty("kanji_full");
         expect(word).toHaveProperty("hiragana_full");
@@ -55,7 +55,7 @@ describe("RenshuuClient (integration)", () => {
 
     it("should fetch a word by ID (not found)", async () => {
         await expect(
-            client.vocabulary.getWord("49302422503972390q"),
+            client.vocabulary.getById("49302422503972390q"),
         ).rejects.toThrow("Word with ID 49302422503972390q not found");
     });
 
@@ -66,7 +66,7 @@ describe("RenshuuClient (integration)", () => {
             const fakeScheduleId =
                 Math.max(...schedules.map((s) => parseInt(s.id ?? ""))) + 1;
             await expect(
-                client.vocabulary.addWordToSchedule(1, fakeScheduleId),
+                client.vocabulary.addToSchedule(1, fakeScheduleId),
             ).rejects.toThrow(`Request failed with status: 404`);
         });
 
@@ -82,7 +82,7 @@ describe("RenshuuClient (integration)", () => {
             const term = terms.data[0];
 
             await expect(
-                client.vocabulary.addWordToSchedule(term.id ?? "1", scheduleId),
+                client.vocabulary.addToSchedule(term.id ?? "1", scheduleId),
             ).rejects.toThrow(`Request failed with status: 409`);
         });
 
@@ -95,12 +95,12 @@ describe("RenshuuClient (integration)", () => {
             }
 
             try {
-                await client.vocabulary.removeWordFromSchedule(111, scheduleId);
+                await client.vocabulary.removeFromSchedule(111, scheduleId);
             } catch (e) {
                 // Ignore
             }
 
-            await client.vocabulary.addWordToSchedule(111, scheduleId);
+            await client.vocabulary.addToSchedule(111, scheduleId);
         });
     });
 
@@ -113,11 +113,11 @@ describe("RenshuuClient (integration)", () => {
         }
 
         try {
-            await client.vocabulary.addWordToSchedule(112, scheduleId);
+            await client.vocabulary.addToSchedule(112, scheduleId);
         } catch (e) {
             // Ignore
         }
 
-        await client.vocabulary.removeWordFromSchedule(112, scheduleId);
+        await client.vocabulary.removeFromSchedule(112, scheduleId);
     });
 });

@@ -31,7 +31,7 @@ describe("SentenceService (unit)", () => {
             ],
         });
 
-        const result = await service.searchSentence("search");
+        const result = await service.search("search");
 
         expect(fetch).toHaveBeenCalledWith(
             "https://api.renshuu.org/v1/reibun/search?value=search&pg=1",
@@ -79,7 +79,7 @@ describe("SentenceService (unit)", () => {
             ],
         });
 
-        const result = await service.searchSentence("search");
+        const result = await service.search("search");
 
         expect(fetch).toHaveBeenCalledWith(
             "https://api.renshuu.org/v1/reibun/search?value=search&pg=1",

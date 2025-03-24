@@ -22,7 +22,7 @@ describe("GrammarService (unit)", () => {
                 title_japanese: "テスト",
             });
 
-            const grammar = await service.getGrammar(1);
+            const grammar = await service.getById(1);
 
             expect(fetch).toHaveBeenCalledWith(
                 "https://api.renshuu.org/v1/grammar/1",
@@ -45,7 +45,7 @@ describe("GrammarService (unit)", () => {
         it("should add grammar to a user list", async () => {
             mockFetch({});
 
-            await service.addGrammarToList(1, 9);
+            await service.addToList(1, 9);
             expect(fetch).toHaveBeenCalledWith(
                 "https://api.renshuu.org/v1/grammar/1?list_id=9",
                 {
@@ -62,7 +62,7 @@ describe("GrammarService (unit)", () => {
         it("should add grammar to a user schedule", async () => {
             mockFetch({});
 
-            await service.addGrammarToSchedule(1, 9);
+            await service.addToSchedule(1, 9);
             expect(fetch).toHaveBeenCalledWith(
                 "https://api.renshuu.org/v1/grammar/1?sched_id=9",
                 {
@@ -79,7 +79,7 @@ describe("GrammarService (unit)", () => {
         it("should remove grammar from a user list", async () => {
             mockFetch({});
 
-            await service.removeGrammarFromList(1, 9);
+            await service.removeFromList(1, 9);
             expect(fetch).toHaveBeenCalledWith(
                 "https://api.renshuu.org/v1/grammar/1?list_id=9",
                 {
@@ -96,7 +96,7 @@ describe("GrammarService (unit)", () => {
         it("should remove grammar from a user schedule", async () => {
             mockFetch({});
 
-            await service.removeGrammarFromSchedule(1, 9);
+            await service.removeFromSchedule(1, 9);
             expect(fetch).toHaveBeenCalledWith(
                 "https://api.renshuu.org/v1/grammar/1?sched_id=9",
                 {
@@ -124,7 +124,7 @@ describe("GrammarService (unit)", () => {
                 ],
             });
 
-            const grammar = await service.searchGrammar("test");
+            const grammar = await service.search("test");
             expect(fetch).toHaveBeenCalledWith(
                 "https://api.renshuu.org/v1/grammar/search?value=test&pg=1",
                 {

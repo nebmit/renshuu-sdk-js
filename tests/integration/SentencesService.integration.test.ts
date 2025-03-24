@@ -14,7 +14,7 @@ describe("SentencesService (integration)", () => {
     });
 
     it("should search for a sentence", async () => {
-        const result = await client.sentences.searchSentence("あいかわら");
+        const result = await client.sentences.search("あいかわら");
 
         expect(result.data.length).toBeGreaterThan(0);
         expect(result.data.map((s) => s.id)).toContain(138695);
@@ -24,7 +24,7 @@ describe("SentencesService (integration)", () => {
     });
 
     it("should search for a sentence with pagination", async () => {
-        const prev = await client.sentences.searchSentence("あいかわら");
+        const prev = await client.sentences.search("あいかわら");
 
         const result = await prev.pagination.next();
 

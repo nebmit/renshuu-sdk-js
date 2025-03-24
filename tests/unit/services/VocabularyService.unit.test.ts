@@ -22,7 +22,7 @@ describe("VocabularyService (unit)", () => {
             ],
         });
 
-        const word = await service.getWord(123);
+        const word = await service.getById(123);
 
         expect(fetch).toHaveBeenCalledWith(
             "https://api.renshuu.org/v1/word/123",
@@ -44,7 +44,7 @@ describe("VocabularyService (unit)", () => {
             ],
         });
 
-        await expect(service.getWord(789)).rejects.toThrow(
+        await expect(service.getById(789)).rejects.toThrow(
             "Word with ID 789 not found",
         );
     });
@@ -52,7 +52,7 @@ describe("VocabularyService (unit)", () => {
     it("should add a word to a schedule", async () => {
         mockFetch({});
 
-        const success = await service.addWordToSchedule(123, 456);
+        const success = await service.addToSchedule(123, 456);
 
         expect(fetch).toHaveBeenCalledWith(
             "https://api.renshuu.org/v1/word/123?sched_id=456",
@@ -69,7 +69,7 @@ describe("VocabularyService (unit)", () => {
     it("should add a word to a list", async () => {
         mockFetch({});
 
-        const success = await service.addWordToList(123, 456);
+        const success = await service.addToList(123, 456);
 
         expect(fetch).toHaveBeenCalledWith(
             "https://api.renshuu.org/v1/word/123?list_id=456",
@@ -93,7 +93,7 @@ describe("VocabularyService (unit)", () => {
             pg: 1,
         });
 
-        const words = await service.searchWords("test");
+        const words = await service.search("test");
 
         expect(fetch).toHaveBeenCalledWith(
             "https://api.renshuu.org/v1/word/search?value=test&pg=1",
@@ -119,7 +119,7 @@ describe("VocabularyService (unit)", () => {
     it("should remove a word from a schedule", async () => {
         mockFetch({});
 
-        const success = await service.removeWordFromSchedule(123, 456);
+        const success = await service.removeFromSchedule(123, 456);
 
         expect(fetch).toHaveBeenCalledWith(
             "https://api.renshuu.org/v1/word/123?sched_id=456",
@@ -136,7 +136,7 @@ describe("VocabularyService (unit)", () => {
     it("should remove a word from a list", async () => {
         mockFetch({});
 
-        const success = await service.removeWordFromList(123, 456);
+        const success = await service.removeFromList(123, 456);
 
         expect(fetch).toHaveBeenCalledWith(
             "https://api.renshuu.org/v1/word/123?list_id=456",

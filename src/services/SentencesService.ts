@@ -10,7 +10,7 @@ export class SentencesService {
         this.base = base;
     }
 
-    private async searchSentenceFetcher(
+    private async searchFetcher(
         page: number,
         query: string,
     ): Promise<PaginatedResult<RenshuuSimpleSentence>> {
@@ -23,7 +23,7 @@ export class SentencesService {
         const totalPages = Math.ceil((r.result_count ?? 1) / (r.perPage ?? 1));
 
         return buildPaginationResponse<RenshuuSimpleSentence, [string]>(
-            this.searchSentenceFetcher.bind(this),
+            this.searchFetcher.bind(this),
             r.reibuns ?? [],
             r.pg ?? page,
             totalPages,
@@ -36,10 +36,10 @@ export class SentencesService {
      * @param query The search query
      * @returns A paginated result of sentences
      */
-    public async searchSentence(
+    public async search(
         query: string,
     ): Promise<PaginatedResult<RenshuuSimpleSentence>> {
-        return this.searchSentenceFetcher(1, query);
+        return this.searchFetcher(1, query);
     }
 
     private async searchSentenceByWordIdFetcher(

@@ -14,7 +14,7 @@ describe("GrammarService (integration)", () => {
     });
 
     it("should get a grammar by id", async () => {
-        const grammar = await client.grammar.getGrammar(1);
+        const grammar = await client.grammar.getById(1);
         expect(grammar).toHaveProperty("id");
         expect(grammar).toHaveProperty("title_english");
         expect(grammar).toHaveProperty("title_japanese");
@@ -29,7 +29,7 @@ describe("GrammarService (integration)", () => {
             const fakeScheduleId =
                 Math.max(...schedules.map((s) => parseInt(s.id ?? ""))) + 1;
             await expect(
-                client.grammar.addGrammarToSchedule(1, fakeScheduleId),
+                client.grammar.addToSchedule(1, fakeScheduleId),
             ).rejects.toThrow(`Request failed with status: 404`);
         });
 
@@ -42,13 +42,13 @@ describe("GrammarService (integration)", () => {
             }
 
             try {
-                await client.grammar.addGrammarToSchedule(1, scheduleId);
+                await client.grammar.addToSchedule(1, scheduleId);
             } catch (e) {
                 // Ignore
             }
 
             await expect(
-                client.grammar.addGrammarToSchedule(1, scheduleId),
+                client.grammar.addToSchedule(1, scheduleId),
             ).rejects.toThrow(`Request failed with status: 409`);
         });
 
@@ -61,12 +61,12 @@ describe("GrammarService (integration)", () => {
             }
 
             try {
-                await client.grammar.removeGrammarFromSchedule(111, scheduleId);
+                await client.grammar.removeFromSchedule(111, scheduleId);
             } catch (e) {
                 // Ignore
             }
 
-            await client.grammar.addGrammarToSchedule(111, scheduleId);
+            await client.grammar.addToSchedule(111, scheduleId);
         });
     });
 
@@ -79,16 +79,16 @@ describe("GrammarService (integration)", () => {
         }
 
         try {
-            await client.grammar.addGrammarToSchedule(112, scheduleId);
+            await client.grammar.addToSchedule(112, scheduleId);
         } catch (e) {
             // Ignore
         }
 
-        await client.grammar.removeGrammarFromSchedule(112, scheduleId);
+        await client.grammar.removeFromSchedule(112, scheduleId);
     });
 
     it("should search for grammar", async () => {
-        const result = await client.grammar.searchGrammar("ながら");
+        const result = await client.grammar.search("ながら");
 
         result.data.forEach((grammar) => {
             expect(grammar).toHaveProperty("id");
