@@ -30,7 +30,7 @@ describe("GrammarService (integration)", () => {
                 Math.max(...schedules.map((s) => parseInt(s.id ?? ""))) + 1;
             await expect(
                 client.grammar.addToSchedule(1, fakeScheduleId),
-            ).rejects.toThrow(`Request failed with status: 404`);
+            ).rejects.toThrow(`Not Found (404)`);
         });
 
         it("should add a grammar to a schedule (grammar already added)", async () => {
@@ -49,7 +49,7 @@ describe("GrammarService (integration)", () => {
 
             await expect(
                 client.grammar.addToSchedule(1, scheduleId),
-            ).rejects.toThrow(`Request failed with status: 409`);
+            ).rejects.toThrow(`Conflict (409)`);
         });
 
         it("should add a grammar to a schedule", async () => {

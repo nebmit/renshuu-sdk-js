@@ -30,7 +30,7 @@ describe("KanjiService (integration)", () => {
                 Math.max(...schedules.map((s) => parseInt(s.id ?? ""))) + 1;
             await expect(
                 client.kanji.addToSchedule(2100, fakeScheduleId),
-            ).rejects.toThrow(`Request failed with status: 404`);
+            ).rejects.toThrow(`Not Found (404)`);
         });
 
         it("should add a kanji to a schedule (kanji already added)", async () => {
@@ -49,7 +49,7 @@ describe("KanjiService (integration)", () => {
 
             await expect(
                 client.kanji.addToSchedule(2100, scheduleId),
-            ).rejects.toThrow(`Request failed with status: 409`);
+            ).rejects.toThrow(`Conflict (409)`);
         });
 
         it("should add a kanji to a schedule", async () => {

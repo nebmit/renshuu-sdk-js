@@ -67,7 +67,7 @@ describe("RenshuuClient (integration)", () => {
                 Math.max(...schedules.map((s) => parseInt(s.id ?? ""))) + 1;
             await expect(
                 client.vocabulary.addToSchedule(1, fakeScheduleId),
-            ).rejects.toThrow(`Request failed with status: 404`);
+            ).rejects.toThrow(`Not Found (404)`);
         });
 
         it("should add a word to a schedule (word already added)", async () => {
@@ -83,7 +83,7 @@ describe("RenshuuClient (integration)", () => {
 
             await expect(
                 client.vocabulary.addToSchedule(term.id ?? "1", scheduleId),
-            ).rejects.toThrow(`Request failed with status: 409`);
+            ).rejects.toThrow(`Conflict (409)`);
         });
 
         it("should add a word to a schedule", async () => {
