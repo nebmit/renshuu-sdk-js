@@ -14,30 +14,16 @@ jobs:
             - name: Checkout code
               uses: actions/checkout@v4
               with:
-                  fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+                fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
 
             - name: Setup Node.js
               uses: actions/setup-node@v4
               with:
-                  node-version: "20"
+                node-version: 20
+                registry-url: https://registry.npmjs.org/
 
             - name: Install dependencies
               run: npm ci
 
-            - name: Run Jest tests with coverage
-              run: npm run coverage
-              env:
-                  RENSHUU_API_KEY: ${{ secrets.RENSHUU_API_KEY }}
-
-            - name: SonarQube Scan
-              uses: SonarSource/sonarqube-scan-action@v5
-              with:
-                  args: >
-                      -Dsonar.projectKey=nebmit_renshuu-sdk-js
-                      -Dsonar.organization=nebmit
-                      -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
-                      -Dsonar.coverage.exclusions="**/*.test.ts,tests/**"
-                      -Dsonar.cpd.exclusions="**/*.test.ts,tests/**"
-                      -Dsonar.exclusions="src/types/renshuuApiTypes.ts"
-              env:
-                  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+            - name: Run Unit tests
+              run: npm run test:unit

@@ -1,6 +1,3 @@
-# This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
-# For more information see: https://docs.github.com/en/actions/publishing-packages/publishing-nodejs-packages
-
 name: Node.js Package
 
 on:
@@ -12,17 +9,34 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
+              with:
+                fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+
             - uses: actions/setup-node@v4
               with:
-                  node-version: 20
-                  registry-url: https://registry.npmjs.org/
+                node-version: 20
+                registry-url: https://registry.npmjs.org/
+
             - name: Install dependencies
               run: npm ci
 
-            - name: Run tests
-              run: npm test
+            - name: Run Jest tests with coverage
+              run: npm run coverage
               env:
-                  RENSHUU_API_KEY: ${{ secrets.RENSHUU_API_KEY }}
+                RENSHUU_API_KEY: ${{ secrets.RENSHUU_API_KEY }}
+
+            - name: SonarQube Scan
+              uses: SonarSource/sonarqube-scan-action@v5
+              with:
+                args: >
+                  -Dsonar.projectKey=nebmit_renshuu-sdk-js
+                  -Dsonar.organization=nebmit
+                  -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
+                  -Dsonar.coverage.exclusions="**/*.test.ts,tests/**"
+                  -Dsonar.cpd.exclusions="**/*.test.ts,tests/**"
+                  -Dsonar.exclusions="src/types/renshuuApiTypes.ts"
+              env:
+                SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
             - name: Build
               run: npm run build
@@ -30,14 +44,14 @@ jobs:
             - name: Determine publish tag
               id: get_version
               run: |
-                  VERSION=$(node -p "require('./package.json').version")
-                  if [[ "$VERSION" == *"-alpha"* ]]; then
-                    echo "tag=alpha" >> $GITHUB_OUTPUT
-                  else
-                    echo "tag=latest" >> $GITHUB_OUTPUT
-                  fi
+                VERSION=$(node -p "require('./package.json').version")
+                if [[ "$VERSION" == *"-alpha"* ]]; then
+                  echo "tag=alpha" >> $GITHUB_OUTPUT
+                else
+                  echo "tag=latest" >> $GITHUB_OUTPUT
+                fi
 
             - name: Publish to npm
               run: npm publish --tag ${{ steps.get_version.outputs.tag }}
               env:
-                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+                NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
