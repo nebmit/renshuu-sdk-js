@@ -1,3 +1,10 @@
+import {
+    UnauthorizedError,
+    NotFoundError,
+    ConflictError,
+    RateLimitError,
+    RenshuuApiError,
+} from "./errors";
 import type { RenshuuClientConfig } from "./types";
 
 export class BaseClient {
@@ -39,8 +46,9 @@ export class BaseClient {
         });
 
         if (!response.ok) {
-            throw new Error(`Request failed with status: ${response.status}`);
+            return this.handleErrorResponse(response);
         }
+
         return response.json() as Promise<T>;
     }
 
@@ -61,12 +69,15 @@ export class BaseClient {
         });
 
         if (!response.ok) {
-            throw new Error(`Request failed with status: ${response.status}`);
+            return this.handleErrorResponse(response);
         }
 
         return true;
     }
 
+    /**
+     * Internal helper to send DELETE requests
+     */
     public async delete(
         endpoint: string,
         params?: Record<string, string | number>,
@@ -81,9 +92,38 @@ export class BaseClient {
         });
 
         if (!response.ok) {
-            throw new Error(`Request failed with status: ${response.status}`);
+            return this.handleErrorResponse(response);
         }
 
         return true;
+    }
+
+    /**
+     * Parse the response body and throw a suitable error based on status code.
+     */
+    private async handleErrorResponse(response: Response): Promise<never> {
+        let body: unknown;
+        try {
+            body = await response.json();
+        } catch {
+            body = await response.text(); // fallback if not valid JSON
+        }
+
+        switch (response.status) {
+            case 401:
+                throw new UnauthorizedError(response.status, body);
+            case 404:
+                throw new NotFoundError(response.status, body);
+            case 409:
+                throw new ConflictError(response.status, body);
+            case 429:
+                throw new RateLimitError(response.status, body);
+            default:
+                throw new RenshuuApiError(
+                    `Request failed with status ${response.status}`,
+                    response.status,
+                    body,
+                );
+        }
     }
 }
