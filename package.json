@@ -19,6 +19,11 @@
       "types": "./dist/index.d.ts"
     }
   },
+  "files": [
+    "dist/",
+    "LICENSE",
+    "README.md"
+  ],
   "scripts": {
     "build": "rollup -c rollup.config.js",
     "lint": "npx prettier . --write",
