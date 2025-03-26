@@ -6,7 +6,7 @@
 [![npm bundle size (min)](https://img.shields.io/bundlephobia/min/renshuu-sdk-js)](https://bundlephobia.com/package/renshuu-sdk-js)
 [![npm bundle size (minzip)](https://img.shields.io/bundlephobia/minzip/renshuu-sdk-js)](https://bundlephobia.com/package/renshuu-sdk-js)
 
-A JavaScript/TypeScript SDK for interacting with the [Renshuu API](https://api.renshuu.org/docs).  
+A JavaScript/TypeScript SDK for interacting with the [Renshuu API](https://api.renshuu.org/docs).
 
 - Works in **Node**, modern **browsers**, and **browser extensions** (UMD).
 - Supports endpoints for vocabulary, grammar, kanji, schedules, sentences, and user lists.
