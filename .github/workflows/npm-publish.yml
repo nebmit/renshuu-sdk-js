@@ -26,7 +26,7 @@ jobs:
                   RENSHUU_API_KEY: ${{ secrets.RENSHUU_API_KEY }}
 
             - name: SonarQube Scan
-              uses: SonarSource/sonarqube-scan-action@v5
+              uses: SonarSource/sonarqube-scan-action@v6
               with:
                   args: >
                       -Dsonar.projectKey=nebmit_renshuu-sdk-js
